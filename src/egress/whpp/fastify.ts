@@ -165,5 +165,20 @@ export default function (fastify: FastifyInstance, opts: any, done) {
     }
   });
 
+  fastify.get("/channel", {}, async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const channels = adapter.getChannelList();
+      reply.code(200).send(channels.map(channelId => {
+        return {
+          channelId: channelId,
+          resource: adapter.getBaseUrl() + "/channel/" + channelId,
+        };
+      }));
+    } catch (e) {
+      console.error(e);
+      const err = new Error("Exception thrown when listing channels");
+      reply.code(500).send(err.message);
+    }
+  });
   done();
 }

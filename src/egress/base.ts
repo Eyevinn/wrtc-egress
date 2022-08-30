@@ -86,4 +86,8 @@ export class BaseAdapter implements EgressEndpoint {
     }
     throw new Error("Channel has no media streams");
   }
+
+  getChannelList(): string[] {
+    return this.channelManager.getChannelIds();
+  }
 }
