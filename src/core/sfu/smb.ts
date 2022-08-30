@@ -109,7 +109,6 @@ export class SmbProtocol implements SfuProtocol {
     }
 
     const allocateResponseJson = await allocateResponse.json();
-    this.log("Allocated conference", allocateResponseJson);
 
     return allocateResponseJson['id'];
   }
@@ -154,7 +153,6 @@ export class SmbProtocol implements SfuProtocol {
     }
 
     const smbEndpointDescription: SmbEndpointDescription = (await response.json());
-    this.log(smbEndpointDescription);
     return smbEndpointDescription;
   }
 
