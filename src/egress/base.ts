@@ -51,6 +51,7 @@ export class BaseAdapter implements EgressEndpoint {
         this.log(`Playback endpoint at ${address + this.opts.prefix}`);
         this.log(`Channel management endpoint at ${address + "/api/docs" }`);
         this.log(`Base URL: ${this.getBaseUrl()}`);
+        resolve();
       });  
     });
   }
