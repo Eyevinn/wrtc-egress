@@ -7,7 +7,7 @@ const endpoint = new WHPPEndpoint({
   useHttps: process.env.WHPP_USE_HTTPS && process.env.WHPP_USE_HTTPS === "true",
   prefix: "/whpp",
   sfuAdapter: SfuType.smb,
-  sfuOptions: { smbUrl: "http://localhost:8080/conferences/" },
+  sfuOptions: { smbUrl: process.env.SMB_URL || "http://localhost:8080/conferences/" },
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 });
 endpoint.listen();
