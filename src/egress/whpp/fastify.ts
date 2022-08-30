@@ -61,7 +61,6 @@ export default function (fastify: FastifyInstance, opts: any, done) {
   fastify.post("/channel/:channelId", {}, async (request: PostRequest, reply: FastifyReply) => {
     try {
       const channelId = request.params.channelId;
-      const iceServers = adapter.getIceServers();
 
       const viewer = adapter.createViewer(channelId, adapter.getResourceIdForChannel(channelId));
 

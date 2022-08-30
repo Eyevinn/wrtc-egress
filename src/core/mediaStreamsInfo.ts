@@ -19,3 +19,35 @@ export interface MediaStreamsInfo {
     ssrcGroups: MediaStreamsInfoSsrcGroup[];
   }
 }
+
+const MediaStreamsInfoSsrcSchema = {
+  ssrc: { type: "string" },
+  cname: { type: "string" },
+  mslabel: { type: "string" },
+  label: { type: "string" }
+};
+
+const MediaStreamsInfoSsrcGroupSchema = {
+  semantics: { type: "string" },
+  ssrcs: { type: "array", items: { type: "string" } }
+};
+
+export const MediaStreamsSchema = {
+  $id: "mediastream",
+  type: "object",
+  properties: {
+    audio: { 
+      type: "object",
+      properties: {
+        ssrcs: { type: "array", items: { type: "object", properties: MediaStreamsInfoSsrcSchema } }
+      } 
+    },
+    video: {
+      type: "object",
+      properties: {
+        ssrcs: { type: "array", items: { type: "object", properties: MediaStreamsInfoSsrcSchema } },
+        ssrcsGroups: { type: "array", items: { type: "object", properties: MediaStreamsInfoSsrcGroupSchema } }
+      }
+    }
+  }
+};

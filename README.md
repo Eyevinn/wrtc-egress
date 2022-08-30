@@ -16,13 +16,16 @@ npm install --save @eyevinn/wrtc-egress
 
 ### WHPP Example
 
+Use WHPP as egress protocol and Symphony Media Bridge as SFU.
+
 ```javascript
-import { WHPPEndpoint } from "@eyevinn/wrtc-egress";
+import { WHPPEndpoint, SfuType } from "@eyevinn/wrtc-egress";
 
 const endpoint = new WHPPEndpoint({
   port: 8001,
   hostname: "wrtc-edge.eyevinn.technology",
-  sfuAdapter: "smb",
+  prefix: "/whpp",
+  sfuAdapter: SfuType.smb,
   sfuOptions: { smbUrl: "http://localhost:8080/conferences/" },
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 });

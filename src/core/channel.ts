@@ -1,13 +1,17 @@
 import { Viewer } from "./interface";
+import { MediaStreamsInfo } from "./mediaStreamsInfo";
 
 export class Channel {
   private channelId: string;
   private resourceId: string;
+  private mediaStreams: MediaStreamsInfo;
   private viewers: Map<string, Viewer>;
 
-  constructor(channelId: string, resourceId: string) {
+  constructor(channelId: string, resourceId: string, mediaStreams: MediaStreamsInfo) {
     this.channelId = channelId;
     this.resourceId = resourceId;
+    this.mediaStreams = mediaStreams;
+
     this.viewers = new Map();
   }
 
@@ -41,6 +45,10 @@ export class Channel {
 
   getId(): string {
     return this.channelId;
+  }
+
+  getMediaStreams(): MediaStreamsInfo {
+    return this.mediaStreams;
   }
 
   destroy() {
