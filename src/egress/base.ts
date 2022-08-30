@@ -3,6 +3,7 @@ import fastify, { FastifyInstance } from "fastify";
 import api from "../core/api";
 import { ChannelManager } from "../core/channelManager";
 import { Viewer } from "../core/interface";
+import { MediaStreamsInfo } from "../core/mediaStreamsInfo";
 
 export class BaseAdapter implements EgressEndpoint {
   protected opts: EgressEndpointOptions;
@@ -23,7 +24,7 @@ export class BaseAdapter implements EgressEndpoint {
     this.server = fastify({
       ignoreTrailingSlash: true,
       logger:
-      { level: "info" },
+      { level: "warn" },
     });
     this.server.register(require("fastify-cors"), {
       exposedHeaders: ["Location", "Accept", "Allow"],
@@ -36,7 +37,7 @@ export class BaseAdapter implements EgressEndpoint {
   }
 
   protected log(...args: any[]) {
-    console.log(`Egress Adapter:`, ...args);
+    console.log(`[WebRTC Egress]:`, ...args);
   }
 
   protected error(...args: any[]) {
@@ -47,7 +48,9 @@ export class BaseAdapter implements EgressEndpoint {
     return new Promise((resolve, reject) => {
       this.server.listen({ port: this.opts.port, host: this.opts.interfaceIp }, (err, address) => {
         if (err) reject(err);
-        this.log(`Listening at ${address}`);
+        this.log(`Playback endpoint at ${address + this.opts.prefix}`);
+        this.log(`Channel management endpoint at ${address + "/api/docs" }`);
+        this.log(`Base URL: ${this.getBaseUrl()}`);
       });  
     });
   }
@@ -74,5 +77,13 @@ export class BaseAdapter implements EgressEndpoint {
       return channel.getViewer(viewerId);
     }
     return undefined;
+  }
+
+  getMediaStreamsForChannel(channelId: string): MediaStreamsInfo {
+    const channel = this.channelManager.getChannel(channelId);
+    if (channel) {
+      return channel.getMediaStreams();
+    }
+    throw new Error("Channel has no media streams");
   }
 }

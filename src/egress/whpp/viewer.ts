@@ -4,10 +4,11 @@ import { SfuProtocol } from "../../core/sfu/interface";
 import { BaseViewer } from "../../core/baseViewer";
 import { WhppOfferResponse, WhppAnswerRequest, WhppCandidateRequest } from "./requests";
 import { Viewer } from "../../core/interface";
+import { MediaStreamsInfo } from "../../core/mediaStreamsInfo";
 
 export class WhppViewer extends BaseViewer implements Viewer {
-  constructor(channelId: string, resourceId: string, sfuProtocol: SfuProtocol) {
-    super(channelId, resourceId, sfuProtocol);
+  constructor(channelId: string, resourceId: string, sfuProtocol: SfuProtocol, mediaStreams: MediaStreamsInfo) {
+    super(channelId, resourceId, sfuProtocol, mediaStreams);
   }
 
   async generateOfferResponse(): Promise<WhppOfferResponse> {

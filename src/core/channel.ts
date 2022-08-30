@@ -19,7 +19,7 @@ export class Channel {
     console.log(`[${this.channelId}]`, ...args);
   }
   
-  addViewer(newViewer: Viewer) {
+  addViewer(newViewer: Viewer) {   
     this.viewers.set(newViewer.getId(), newViewer);
     this.log(`Add viewer ${newViewer.getId()} to ${this.channelId}, size ${this.viewers.size}`);
   }

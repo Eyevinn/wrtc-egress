@@ -62,7 +62,9 @@ export default function (fastify: FastifyInstance, opts: any, done) {
     try {
       const channelId = request.params.channelId;
 
-      const viewer = adapter.createViewer(channelId, adapter.getResourceIdForChannel(channelId));
+      const viewer = adapter.createViewer(channelId, 
+        adapter.getResourceIdForChannel(channelId), 
+        adapter.getMediaStreamsForChannel(channelId));
 
       viewer.on("connect", () => {
         adapter.addViewerToChannel(channelId, viewer);

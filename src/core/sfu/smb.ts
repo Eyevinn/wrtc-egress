@@ -88,6 +88,11 @@ export class SmbProtocol implements SfuProtocol {
 
   constructor(opts?: SmbProtocolOptions) {
     this.smbUrl = opts.smbUrl;
+    this.log("URL=" + this.smbUrl);
+  }
+
+  log(...args: any[]) {
+    console.log(`[SMB SFU]:`, ...args);
   }
 
   async allocateConference(): Promise<string> {
@@ -104,6 +109,8 @@ export class SmbProtocol implements SfuProtocol {
     }
 
     const allocateResponseJson = await allocateResponse.json();
+    this.log("Allocated conference", allocateResponseJson);
+
     return allocateResponseJson['id'];
   }
 
@@ -147,6 +154,7 @@ export class SmbProtocol implements SfuProtocol {
     }
 
     const smbEndpointDescription: SmbEndpointDescription = (await response.json());
+    this.log(smbEndpointDescription);
     return smbEndpointDescription;
   }
 

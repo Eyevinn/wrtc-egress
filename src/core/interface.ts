@@ -1,3 +1,4 @@
+import { MediaStreamsInfo } from "./mediaStreamsInfo";
 import { SfuProtocol } from "./sfu/interface";
 
 export interface Viewer {

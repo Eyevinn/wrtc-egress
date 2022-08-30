@@ -16,14 +16,15 @@ export class BaseViewer extends EventEmitter {
   protected mediaStreams?: MediaStreamsInfo;
   protected endpointDescription: any;
 
-  constructor(channelId: string, resourceId: string, sfuProtocol: SfuProtocol) {
+  constructor(channelId: string, resourceId: string, sfuProtocol: SfuProtocol, mediaStreams: MediaStreamsInfo) {
     super();
     this.resourceId = resourceId;
     this.viewerId = uuidv4();
     this.sfuProtocol = sfuProtocol;
+    this.mediaStreams = mediaStreams;
     this.log(`Create, channelId ${channelId}, sfuResourceId ${resourceId}`);
   }
-    
+  
   getId(): string {
     return this.viewerId;
   }
@@ -37,11 +38,11 @@ export class BaseViewer extends EventEmitter {
   }
 
   protected log(...args: any[]) {
-    console.log(`Viewer ${this.viewerId}`, ...args);
+    console.log(`[Viewer ${this.viewerId}]`, ...args);
   }
 
   protected error(...args: any[]) {
-    console.error(`Viewer ${this.viewerId}`, ...args);
+    console.error(`[Viewer ${this.viewerId}]`, ...args);
   }
 
   protected createOffer(): SessionDescription {
@@ -137,11 +138,9 @@ export class BaseViewer extends EventEmitter {
     return result;
   }
 
-  protected addIngestMids(offer: SessionDescription) {
+  protected addIngestMids(offer: SessionDescription) {    
     const audio = this.endpointDescription.audio;
     const audioPayloadType = audio["payload-type"];
-
-    console.log(JSON.stringify(this.endpointDescription));
 
     for (let element of this.mediaStreams.audio.ssrcs) {
       let audioDescription = this.makeMediaDescription('audio');

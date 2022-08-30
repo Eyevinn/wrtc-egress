@@ -5,6 +5,7 @@ import { WhppViewer } from "./whpp/viewer";
 import SfuProtocolFactory from "../core/sfu/protocolFactory";
 import { SfuProtocol } from "../core/sfu/interface";
 import { Viewer } from "../core/interface";
+import { MediaStreamsInfo } from "../core/mediaStreamsInfo";
 
 export class WHPPEndpoint extends BaseAdapter {
   private sfuProtocol: SfuProtocol;
@@ -16,14 +17,15 @@ export class WHPPEndpoint extends BaseAdapter {
     this.sfuProtocol = SfuProtocolFactory(this.opts.sfuAdapter, this.opts.sfuOptions);
   }
 
-  createViewer(channelId: string, resourceId: string): WhppViewer {
-    const viewer = new WhppViewer(channelId, resourceId, this.sfuProtocol);
+  createViewer(channelId: string, resourceId: string, mediaStreams: MediaStreamsInfo): WhppViewer {
+    const viewer = new WhppViewer(channelId, resourceId, this.sfuProtocol, mediaStreams);
 
     return viewer;
   }
 
   addViewerToChannel(channelId: string, viewer: WhppViewer) {
     const channel = this.channelManager.getChannel(channelId);
+    
     if (!channel) {
       this.error(`Channel ${channelId} not found`);
       return;
