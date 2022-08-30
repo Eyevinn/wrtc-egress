@@ -43,7 +43,7 @@ export default function (fastify: FastifyInstance, opts: any, done) {
     routePrefix: "/docs",
     swagger: {
       consumes: ["application/json"],
-      produces: ["applucation/json"]
+      produces: ["application/json"]
     },
     exposeRoute: true,
   });
