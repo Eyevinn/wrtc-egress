@@ -10,6 +10,7 @@
     "build": "tsc --project ./",
     "dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node --inspect ./dist/server.js\"",
     "server": "node ./dist/server.js",
+    "postversion": "git push && git push --tags",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,10 +18,17 @@
     "url": "git+https://github.com/Eyevinn/wrtc-egress.git"
   },
   "author": "Eyevinn Technology <work@eyevinn.se>",
-  "license": "Apache-2.0",
+  "contributors": [
+    "Jonas Birmé <jonas.birme@eyevinn.se> (Eyevinn Technology AB)"
+  ],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Eyevinn/wrtc-egress/issues"
   },
+  "keywords": [
+    "webrtc",
+    "whpp"
+  ],
   "homepage": "https://github.com/Eyevinn/wrtc-egress#readme",
   "dependencies": {
     "fastify": "^3.27.4",

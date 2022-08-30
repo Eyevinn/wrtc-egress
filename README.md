@@ -1,10 +1,12 @@
-# wrtc-egress
+# Standardized WebRTC Egress Endpoint Library
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Slack](http://slack.streamingtech.se/badge.svg)](http://slack.streamingtech.se)
 
 Server endpoint for standardized WebRTC based streaming. Currently supports the following egress / playback protocol:
 - WHPP: [WebRTC HTTP Playback Protocol](https://github.com/Eyevinn/webrtc-http-playback-protocol/blob/master/webrtc-http-playback-protocol.md)
 
 And support for the following SFUs:
-- Symphony Media Bridge (smb)
+- Symphony Media Bridge (`SfuType.smb`)
 
 ## Usage
 
@@ -38,28 +40,11 @@ Access to WHPP endpoint at `/whpp/channels`.
 
 ## API
 
-| Resource  | Method | Description |
+| Resource  | HTTP Method | Description |
 | --------  | ------ | ----------- |
-| /api/docs | GET | Online API docs |
-| /api/channels | POST | Create a new channel |
-
-## License (Apache-2.0)
-
-```
-Copyright 2022 Eyevinn Technology AB
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
+| `/api/docs` | GET | Online API docs |
+| `/api/channels/:channelId` | POST | Create a new channel |
+| `/api/channels/:channelId` | DELETE | Delete a channel |
 
 ## About Eyevinn Technology
 
