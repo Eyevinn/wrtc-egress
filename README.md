@@ -8,6 +8,8 @@ Server endpoint for standardized WebRTC based streaming. Currently supports the 
 And support for the following SFUs:
 - Symphony Media Bridge (`SfuType.smb`)
 
+![Example of a setup using WHIP and WHPP](docs/webrtc_egress_endpoint.png)
+
 ## Usage
 
 Install library
