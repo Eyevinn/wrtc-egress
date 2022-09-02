@@ -1,6 +1,7 @@
 import { EgressEndpoint, EgressEndpointOptions, ICEServer } from "./interface";
 import fastify, { FastifyInstance } from "fastify";
 import api from "../core/api";
+import healthcheck from "../core/healthcheck";
 import { ChannelManager } from "../core/channelManager";
 import { Viewer } from "../core/interface";
 import { MediaStreamsInfo } from "../core/mediaStreamsInfo";
@@ -33,7 +34,7 @@ export class BaseAdapter implements EgressEndpoint {
       strictPreflight: false,
     });
     this.server.register(api, { prefix: "/api", channelManager: this.channelManager });
-
+    this.server.register(healthcheck);
   }
 
   protected log(...args: any[]) {
