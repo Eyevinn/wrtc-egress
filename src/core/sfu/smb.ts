@@ -3,6 +3,7 @@ import { SfuProtocol } from "./interface";
 
 export interface SmbProtocolOptions {
   smbUrl: string;
+  smbApiKey?: string;
 }
 
 interface SmbCandidate {
@@ -85,9 +86,11 @@ export interface SmbEndpointDescription {
 
 export class SmbProtocol implements SfuProtocol {
   private smbUrl: string;
+  private smbApiKey?: string;
 
   constructor(opts?: SmbProtocolOptions) {
     this.smbUrl = opts.smbUrl;
+    this.smbApiKey = opts.smbApiKey;
     this.log("URL=" + this.smbUrl);
   }
 
@@ -99,7 +102,8 @@ export class SmbProtocol implements SfuProtocol {
     const allocateResponse = await fetch(this.smbUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "X-APIkey": this.smbApiKey,
       },
       body: '{}'
     });
@@ -142,7 +146,8 @@ export class SmbProtocol implements SfuProtocol {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "X-APIkey": this.smbApiKey,
       },
       body: JSON.stringify(request)
     });
@@ -164,7 +169,8 @@ export class SmbProtocol implements SfuProtocol {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "X-APIkey": this.smbApiKey,
       },
       body: JSON.stringify(request)
     });
@@ -180,6 +186,7 @@ export class SmbProtocol implements SfuProtocol {
     const response = await fetch(url, {
       method: "GET",
       headers: {
+        "X-APIkey": this.smbApiKey,
       }
     });
 

@@ -1,0 +1,56 @@
+version: "3.7"
+
+services:
+  sfu:
+    image: eyevinntechnology/wrtc-sfu:v0.2.0
+    cap_add:
+      - SYS_NICE
+    ulimits:
+      rtprio: 99
+    environment:
+      - HTTP_PORT=8280
+      - UDP_PORT=13000
+      - IPV4_ADDR=127.0.0.1
+      - API_KEY=dev
+    logging:
+      driver: "local"
+      options:
+        max-size: 10m
+    ports:
+      - "8280:8280/tcp"
+      - "13000:13000/udp"
+  ingest:
+    image: eyevinntechnology/wrtc-origin:v0.2.1
+    depends_on:
+      - sfu
+      - sfu-edge
+    environment:
+      - PORT=8200
+      - EXT_PORT=8200
+      - ORIGIN_SFU_URL=http://sfu:8280/conferences/
+      - SFU_API_KEY=dev
+      - EDGE_LIST_CONFIG=/etc/edge-list-config.json
+    ports:
+      - "8200:8200/tcp"
+    volumes:
+      - ./dev-edge-list-config.json:/etc/edge-list-config.json
+    extra_hosts:
+      - egress:host-gateway
+  sfu-edge:
+    image: eyevinntechnology/wrtc-sfu:v0.2.0
+    cap_add:
+      - SYS_NICE
+    ulimits:
+      rtprio: 99
+    environment:
+      - HTTP_PORT=8380
+      - UDP_PORT=12000
+      - IPV4_ADDR=127.0.0.1
+      - API_KEY=dev
+    logging:
+      driver: "local"
+      options:
+        max-size: 10m
+    ports:
+      - "8380:8380/tcp"
+      - "12000:12000/udp"
