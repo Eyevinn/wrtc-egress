@@ -34,6 +34,8 @@ services:
       - "8200:8200/tcp"
     volumes:
       - ./dev-edge-list-config.json:/etc/edge-list-config.json
+    extra_hosts:
+      - egress:host-gateway
   sfu-edge:
     image: eyevinntechnology/wrtc-sfu:v0.2.0
     cap_add:

@@ -1,6 +1,6 @@
 [
     { 
         "sfuApiUrl": "http://sfu-edge:8380/conferences/", 
-        "egressApiUrl": "http://host.docker.internal:8001/api"
+        "egressApiUrl": "http://egress:8001/api"
     }
 ]
