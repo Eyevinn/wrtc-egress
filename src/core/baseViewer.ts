@@ -5,6 +5,7 @@ import { SessionDescription } from "sdp-transform";
 import { SfuProtocol } from "./sfu/interface";
 import { MediaStreamsInfo } from "./mediaStreamsInfo";
 import { Viewer } from "./interface";
+import { SmbEndpointDescription } from "./sfu/smb";
 
 export class BaseViewer extends EventEmitter {
   private resourceId: string;
@@ -14,7 +15,7 @@ export class BaseViewer extends EventEmitter {
   private usedMids: string[] = [];
 
   protected mediaStreams?: MediaStreamsInfo;
-  protected endpointDescription: any;
+  protected endpointDescription: SmbEndpointDescription;
 
   constructor(channelId: string, resourceId: string, sfuProtocol: SfuProtocol, mediaStreams: MediaStreamsInfo) {
     super();
@@ -225,7 +226,7 @@ export class BaseViewer extends EventEmitter {
 
   protected addSFUMids(offer: SessionDescription) {
     const video = this.endpointDescription.video;
-    const videoSsrc = video.ssrcs[0];
+    const videoSsrc = video.streams[0].sources[0].main;
 
     let videoDescription = this.makeMediaDescription('video');
     videoDescription.payloads = video["payload-types"]

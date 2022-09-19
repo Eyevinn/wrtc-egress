@@ -53,30 +53,29 @@ interface SmbRtpHeaderExtension {
   'uri': string;
 }
 
-interface SmbSsrcAttribute {
-  'sources': number[];
-  'content': string;
+export interface SmbVideoSource {
+  'main': number;
+  'feedback'?: number;
 }
 
-interface SmbSsrcGroup {
-  'ssrcs': string[];
-  'semantics': string;
+export interface SmbVideoStream {
+  'sources': SmbVideoSource[];
+  'id': string;
+  'content': string;
 }
 
 export interface SmbEndpointDescription {
   'bundle-transport'?: SmbTransport;
   'audio'?: {
-    'ssrcs': string[];
+    'ssrcs': number[];
     'payload-type': SmbPayloadType;
     'rtp-hdrexts': SmbRtpHeaderExtension[];
   };
 
   'video'?: {
-    'ssrcs': string[];
-    'ssrc-groups': SmbSsrcGroup[];
+    'streams': SmbVideoStream[];
     'payload-types': SmbPayloadType[];
     'rtp-hdrexts'?: SmbRtpHeaderExtension[];
-    'ssrc-attributes'?: SmbSsrcAttribute[];
   };
 
   'data'?: {
@@ -143,7 +142,7 @@ export class SmbProtocol implements SfuProtocol {
     }
 
     const url = this.smbUrl + conferenceId + '/' + endpointId;
-    const response = await fetch(url, {
+    const response: Response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +153,7 @@ export class SmbProtocol implements SfuProtocol {
 
     if (!response.ok) {
       console.log(JSON.stringify(request));
-      throw new Error("Failed to allocate endpoint");
+      throw new Error("Failed to allocate endpoint " + response.status + " " + response.statusText);
     }
 
     const smbEndpointDescription: SmbEndpointDescription = (await response.json());

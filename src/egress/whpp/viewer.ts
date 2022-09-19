@@ -34,8 +34,7 @@ export class WhppViewer extends BaseViewer implements Viewer {
   async handleAnswerRequest(request: WhppAnswerRequest): Promise<void> {
     try {
       this.endpointDescription.audio.ssrcs = [];
-      this.endpointDescription.video.ssrcs = [];
-      this.endpointDescription.video["ssrc-groups"] = [];
+      this.endpointDescription.video.streams = [];
 
       const parsedAnswer = parse(request.answer);
       const answerMediaDescription = parsedAnswer.media[0];
