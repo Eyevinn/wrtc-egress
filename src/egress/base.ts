@@ -83,10 +83,11 @@ export class BaseAdapter implements EgressEndpoint {
 
   getMediaStreamsForChannel(channelId: string): MediaStreamsInfo {
     const channel = this.channelManager.getChannel(channelId);
-    if (channel) {
-      return channel.getMediaStreams();
+    if (!channel) {
+      throw new Error("Channel not found");
     }
-    throw new Error("Channel has no media streams");
+
+    return channel.getMediaStreams();
   }
 
   getChannelList(): string[] {
