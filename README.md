@@ -4,6 +4,7 @@
 
 Server endpoint for standardized WebRTC based streaming. Currently supports the following egress / playback protocol:
 - WHPP: [WebRTC HTTP Playback Protocol](https://github.com/Eyevinn/webrtc-http-playback-protocol/blob/master/webrtc-http-playback-protocol.md)
+- WHEP: [WebRTC HTTP Egress Protocol](https://datatracker.ietf.org/doc/draft-murillo-whep/)
 
 And support for the following SFUs:
 - Symphony Media Bridge (`SfuType.smb`)
@@ -40,6 +41,26 @@ When running an HTTP API for managing the channel is available at `/api/channels
 
 Access to WHPP endpoint at `/whpp/channels`.
 
+### WHEP Example
+
+Use WHEP as egress protocol and Symphony Media Bridge as SFU.
+
+```javascript
+import { WHEPEndpoint, SfuType } from "@eyevinn/wrtc-egress";
+
+const endpoint = new WHEPEndpoint({
+  port: 8001,
+  hostname: "wrtc-edge.eyevinn.technology",
+  prefix: "/whep",
+  sfuAdapter: SfuType.smb,
+  sfuOptions: { smbUrl: "http://localhost:8080/conferences/", apiKey: "secret" },
+  iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+});
+endpoint.listen();
+```
+
+Access to WHEP endpoint at `/whep/channels`.
+
 ## API
 
 | Resource  | HTTP Method | Description |
@@ -65,6 +86,8 @@ npm run dev
 If you don't have a WHIP stream you can go to https://web.whip.eyevinn.technology and enter this endpoint URL: [http://localhost:8200/api/v2/whip/sfu-broadcaster?channelId=test](https://web.whip.eyevinn.technology/?endpoint=http%3A%2F%2Flocalhost%3A8200%2Fapi%2Fv2%2Fwhip%2Fsfu-broadcaster%3FchannelId%3Dtest)
 
 To try playback with for example WHPP you can open a browser at https://webrtc.player.eyevinn.technology and enter `http://localhost:8001/whpp/channel/test` as WHPP url.
+
+Or for WHEP in a similar way https://webrtc.player.eyevinn.technology/?type=whep and enter `http://localhost:8001/whep/channel/test` as WHEP url.
 
 ## Support
 
