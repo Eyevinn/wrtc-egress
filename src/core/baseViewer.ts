@@ -165,7 +165,7 @@ export class BaseViewer extends EventEmitter {
       audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'cname', value: element.cname });
       audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'label', value: element.label });
       audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'mslabel', value: element.mslabel });
-      audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'msid', value: `${element.label} ${element.mslabel}` });
+      audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'msid', value: `${element.mslabel} ${element.label}` });
 
       offer.media.push(audioDescription);
     }
@@ -211,7 +211,7 @@ export class BaseViewer extends EventEmitter {
         videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'cname', value: ssrc.cname });
         videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'label', value: ssrc.label });
         videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'mslabel', value: ssrc.mslabel });
-        videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'msid', value: `${ssrc.label} ${ssrc.mslabel}` });
+        videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'msid', value: `${ssrc.mslabel} ${ssrc.label}` });
       }
 
       videoDescription.ssrcGroups = this.mediaStreams.video.ssrcGroups.flatMap(element => {
