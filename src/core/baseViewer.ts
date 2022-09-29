@@ -211,7 +211,7 @@ export class BaseViewer extends EventEmitter {
         videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'cname', value: ssrc.cname });
         videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'label', value: ssrc.label });
         videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'mslabel', value: ssrc.mslabel });
-        videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'msid', value: `${ssrc.label} ${ssrc.mslabel}` });
+        videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'msid', value: `${ssrc.mslabel} ${ssrc.label}` });
       }
 
       videoDescription.ssrcGroups = this.mediaStreams.video.ssrcGroups.flatMap(element => {
