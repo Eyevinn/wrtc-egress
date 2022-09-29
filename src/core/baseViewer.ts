@@ -165,7 +165,7 @@ export class BaseViewer extends EventEmitter {
       audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'cname', value: element.cname });
       audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'label', value: element.label });
       audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'mslabel', value: element.mslabel });
-      audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'msid', value: `${element.label} ${element.mslabel}` });
+      audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'msid', value: `${element.mslabel} ${element.label}` });
 
       offer.media.push(audioDescription);
     }
