@@ -28,7 +28,7 @@ export class BaseAdapter implements EgressEndpoint {
       { level: "warn" },
     });
     this.server.register(require("fastify-cors"), {
-      exposedHeaders: ["Location", "Accept", "Allow"],
+      exposedHeaders: ["Location", "Accept", "Allow", "Accept-POST"],
       methods: ["POST", "GET", "OPTIONS", "PATCH", "PUT"],
       preflightContinue: true,
       strictPreflight: false,
