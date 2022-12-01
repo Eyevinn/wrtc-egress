@@ -45,7 +45,7 @@ export default function (fastify: FastifyInstance, opts: any, done) {
   fastify.options("/channel/:channelId", {}, async (request: PostRequest, reply: FastifyReply) => {
     try {
       reply.headers({
-        "Accept": [ "application/sdp" ],
+        "Accept-POST": [ "application/sdp" ],
       });
       reply.code(204).send();
     } catch (e) {
