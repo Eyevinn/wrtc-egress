@@ -117,6 +117,10 @@ export class BaseViewer extends EventEmitter {
       setup: transport.dtls.setup === 'actpass' ? 'active' : 'actpass',
       direction: <'sendrecv' | 'recvonly' | 'sendonly' | 'inactive' | undefined>'sendonly',
       rtcpMux: 'rtcp-mux',
+      connection: {
+        version: 4,
+        ip: "0.0.0.0"
+      },
       candidates: transport.ice.candidates.map(element => {
         return {
           foundation: element.foundation,
@@ -152,12 +156,17 @@ export class BaseViewer extends EventEmitter {
         rate: audioPayloadType.clockrate,
         encoding: audioPayloadType.channels
       }];
-      audioDescription.fmtp = [{
-        payload: audioPayloadType.id,
-        config: Object.keys(audioPayloadType.parameters)
-          .flatMap(element => `${element}=${audioPayloadType.parameters[element]}`)
-          .join(';')
-      }];
+
+      const parameters = Object.keys(audioPayloadType.parameters);
+      if (parameters.length !== 0) {
+        audioDescription.fmtp = [{
+          payload: audioPayloadType.id,
+          config: parameters
+            .map(element => `${element}=${audioPayloadType.parameters[element]}`)
+            .join(';')
+        }];
+      }
+
       audioDescription.ext = audio["rtp-hdrexts"].flatMap(element => {
         return { value: element.id, uri: element.uri }
       });
@@ -191,12 +200,15 @@ export class BaseViewer extends EventEmitter {
       });
 
       video["payload-types"].forEach(payloadType => {
-        videoDescription.fmtp.push({
-          payload: payloadType.id,
-          config: Object.keys(payloadType.parameters)
-            .flatMap(element => `${element}=${payloadType.parameters[element]}`)
-            .join(';')
-        });
+        const parameters = Object.keys(payloadType.parameters);
+        if (parameters.length !== 0) {
+          videoDescription.fmtp.push({
+            payload: payloadType.id,
+            config: parameters
+              .map(element => `${element}=${payloadType.parameters[element]}`)
+              .join(';')
+          });
+        }
 
         payloadType["rtcp-fbs"].forEach(rtcpFb => {
           videoDescription.rtcpFb.push({
@@ -240,6 +252,19 @@ export class BaseViewer extends EventEmitter {
         encoding: element.channels
       }
     });
+
+    video["payload-types"].forEach(payloadType => {
+      const parameters = Object.keys(payloadType.parameters);
+      if (parameters.length !== 0) {
+        videoDescription.fmtp.push({
+          payload: payloadType.id,
+          config: parameters
+            .map(element => `${element}=${payloadType.parameters[element]}`)
+            .join(';')
+        });
+      }
+    });
+
     videoDescription.ext = video["rtp-hdrexts"].flatMap(element => {
       return { value: element.id, uri: element.uri }
     });
