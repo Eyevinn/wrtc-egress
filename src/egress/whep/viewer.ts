@@ -25,7 +25,6 @@ export class WhepViewer extends BaseViewer implements Viewer {
   }
 
   async handleAnswerRequest(answer: string): Promise<void> {
-    console.log(answer);
     try {
       this.endpointDescription.audio.ssrcs = [];
       this.endpointDescription.video.streams = [];
