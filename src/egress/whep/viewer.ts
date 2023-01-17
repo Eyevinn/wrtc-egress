@@ -25,6 +25,7 @@ export class WhepViewer extends BaseViewer implements Viewer {
   }
 
   async handleAnswerRequest(answer: string): Promise<void> {
+    console.log(answer);
     try {
       this.endpointDescription.audio.ssrcs = [];
       this.endpointDescription.video.streams = [];
@@ -32,16 +33,17 @@ export class WhepViewer extends BaseViewer implements Viewer {
       const parsedAnswer = parse(answer);
       const answerMediaDescription = parsedAnswer.media[0];
       let transport = this.endpointDescription["bundle-transport"];
-      transport.dtls.type = answerMediaDescription.fingerprint.type;
-      transport.dtls.hash = answerMediaDescription.fingerprint.hash;
+      const answerFingerprint = parsedAnswer.fingerprint ? parsedAnswer.fingerprint : answerMediaDescription.fingerprint;
+      transport.dtls.type = answerFingerprint.type;
+      transport.dtls.hash = answerFingerprint.hash;
       transport.dtls.setup = answerMediaDescription.setup;
       transport.ice.ufrag = answerMediaDescription.iceUfrag;
       transport.ice.pwd = answerMediaDescription.icePwd;
       transport.ice.candidates = !answerMediaDescription.candidates ? [] : answerMediaDescription.candidates.flatMap(element => {
         return {
-          'generation': element.generation,
+          'generation': element.generation ? element.generation : 0,
           'component': element.component,
-          'protocol': element.transport,
+          'protocol': element.transport.toLowerCase(),
           'port': element.port,
           'ip': element.ip,
           'relPort': element.rport,
