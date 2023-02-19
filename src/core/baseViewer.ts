@@ -2,10 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 import { EventEmitter } from "events";
 import { SessionDescription } from "sdp-transform";
 
-import { SfuProtocol } from "./sfu/interface";
+import { SfuProtocol, SfuEndpointDescription } from "./sfu/interface";
 import { MediaStreamsInfo } from "./mediaStreamsInfo";
-import { Viewer } from "./interface";
-import { SmbEndpointDescription } from "./sfu/smb";
 
 export class BaseViewer extends EventEmitter {
   private resourceId: string;
@@ -15,7 +13,7 @@ export class BaseViewer extends EventEmitter {
   private usedMids: string[] = [];
 
   protected mediaStreams?: MediaStreamsInfo;
-  protected endpointDescription: SmbEndpointDescription;
+  protected endpointDescription: SfuEndpointDescription;
 
   constructor(channelId: string, resourceId: string, sfuProtocol: SfuProtocol, mediaStreams: MediaStreamsInfo) {
     super();

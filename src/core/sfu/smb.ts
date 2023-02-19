@@ -1,83 +1,12 @@
 import fetch from 'node-fetch';
-import { SfuProtocol } from "./interface";
+import { SfuEndpointDescription, SfuProtocol, SfuTransport } from "./interface";
 
 export interface SmbProtocolOptions {
   smbUrl: string;
   smbApiKey?: string;
 }
 
-interface SmbCandidate {
-  'generation': number;
-  'component': number;
-  'protocol': string;
-  'port': number;
-  'ip': string;
-  'rel-port'?: number;
-  'rel-addr'?: string;
-  'foundation': string;
-  'priority': number;
-  'type': string;
-  'network'?: number;
-}
-
-interface SmbTransport {
-  'rtcp-mux'?: boolean;
-  'ice'?: {
-    'ufrag': string;
-    'pwd': string;
-    'candidates': SmbCandidate[];
-  };
-  'dtls'?: {
-    'setup': string;
-    'type': string;
-    'hash': string;
-  };
-}
-
-interface RtcpFeedback {
-  'type': string;
-  'subtype': string;
-}
-
-interface SmbPayloadType {
-  'id': number;
-  'name': string;
-  'clockrate': number;
-  'channels'?: number;
-  'parameters'?: any;
-  'rtcp-fbs'?: RtcpFeedback[];
-}
-
-interface SmbRtpHeaderExtension {
-  'id': number;
-  'uri': string;
-}
-
-export interface SmbVideoSource {
-  'main': number;
-  'feedback'?: number;
-}
-
-export interface SmbVideoStream {
-  'sources': SmbVideoSource[];
-  'id': string;
-  'content': string;
-}
-
-export interface SmbEndpointDescription {
-  'bundle-transport'?: SmbTransport;
-  'audio'?: {
-    'ssrcs': number[];
-    'payload-type': SmbPayloadType;
-    'rtp-hdrexts': SmbRtpHeaderExtension[];
-  };
-
-  'video'?: {
-    'streams': SmbVideoStream[];
-    'payload-types': SmbPayloadType[];
-    'rtp-hdrexts'?: SmbRtpHeaderExtension[];
-  };
-
+export interface SmbEndpointDescription extends SfuEndpointDescription {
   'data'?: {
     'port': number;
   };

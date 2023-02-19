@@ -1,6 +1,6 @@
 import { WHPPEndpoint, WHEPEndpoint, SfuType } from ".";
 
-const egressStandard = process.env.EGRESS_STANDARD ? process.env.EGRESS_STANDARD : 'whpp';
+const egressStandard = process.env.EGRESS_STANDARD ? process.env.EGRESS_STANDARD : 'whep';
 
 if (egressStandard === 'whep') {
   const endpoint = new WHEPEndpoint({
