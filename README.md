@@ -85,7 +85,7 @@ npm run dev
 
 If you don't have a WHIP stream you can go to https://web.whip.eyevinn.technology and enter this endpoint URL: [http://localhost:8200/api/v2/whip/sfu-broadcaster?channelId=test](https://web.whip.eyevinn.technology/?endpoint=http%3A%2F%2Flocalhost%3A8200%2Fapi%2Fv2%2Fwhip%2Fsfu-broadcaster%3FchannelId%3Dtest)
 
-To try playback with for example WHPP you can open a browser at https://webrtc.player.eyevinn.technology and enter `http://localhost:8001/whpp/channel/test` as WHPP url.
+To try playback with for example WHEP you can open a browser at https://webrtc.player.eyevinn.technology and enter `http://localhost:8001/whep/channel/test` as WHEP url.
 
 Or for WHEP in a similar way https://webrtc.player.eyevinn.technology/?type=whep and enter `http://localhost:8001/whep/channel/test` as WHEP url.
 
