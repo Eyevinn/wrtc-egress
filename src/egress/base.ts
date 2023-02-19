@@ -93,4 +93,12 @@ export class BaseAdapter implements EgressEndpoint {
   getChannelList(): string[] {
     return this.channelManager.getChannelIds();
   }
+
+  createChannel(channelId: string, resourceId: string, mediaStreams: MediaStreamsInfo) {
+    this.channelManager.createChannel(channelId, resourceId, mediaStreams);
+  }
+
+  removeChannel(channelId: string) {
+    this.channelManager.removeChannel(channelId);
+  }
 }
