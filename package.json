@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --project ./",
+    "build": "tsc -d --project ./",
     "dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node --inspect ./dist/server.js\"",
     "server": "node ./dist/server.js",
     "start": "npm run server",
