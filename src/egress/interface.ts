@@ -1,7 +1,7 @@
 import { SfuType } from "../core/sfu/interface";
 
 export interface ICEServer {
-  urls: string;
+  urls: string | string[];
   username?: string;
   credential?: string;
 }
