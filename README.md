@@ -31,7 +31,7 @@ const endpoint = new WHPPEndpoint({
   hostname: "wrtc-edge.eyevinn.technology",
   prefix: "/whpp",
   sfuAdapter: SfuType.smb,
-  sfuOptions: { smbUrl: "http://localhost:8080/conferences/", apiKey: "secret" },
+  sfuOptions: { smbUrl: "http://localhost:8080", apiKey: "secret" },
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 });
 endpoint.listen();
@@ -53,7 +53,7 @@ const endpoint = new WHEPEndpoint({
   hostname: "wrtc-edge.eyevinn.technology",
   prefix: "/whep",
   sfuAdapter: SfuType.smb,
-  sfuOptions: { smbUrl: "http://localhost:8080/conferences/", apiKey: "secret" },
+  sfuOptions: { smbUrl: "http://localhost:8080", apiKey: "secret" },
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 });
 endpoint.listen();
@@ -66,8 +66,8 @@ Access to WHEP endpoint at `/whep/channels`.
 | Resource  | HTTP Method | Description |
 | --------  | ------ | ----------- |
 | `/api/docs` | GET | Online API docs |
-| `/api/channels/:channelId` | POST | Create a new channel |
-| `/api/channels/:channelId` | DELETE | Delete a channel |
+| `/api/channel/:channelId` | POST | Create a new channel |
+| `/api/channel/:channelId` | DELETE | Delete a channel |
 
 ## Local Development
 
