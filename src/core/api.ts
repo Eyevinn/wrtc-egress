@@ -53,7 +53,8 @@ export default function (fastify: FastifyInstance, opts: any, done) {
   fastify.post("/channel/:channelId", { schema: PostRequestSchema }, async (request: PostRequest, reply: FastifyReply) => {
     try {
       const channelId = request.params.channelId;
-      console.log(`Creating channel ${channelId}`, request.body);
+      console.log(`Creating channel ${channelId}`);
+      console.dir(request.body, { depth: null });
 
       const channel = 
         channelManager.createChannel(channelId, request.body.resourceId, request.body.mediaStreams);

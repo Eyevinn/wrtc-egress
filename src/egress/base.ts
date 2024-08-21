@@ -17,7 +17,7 @@ export class BaseAdapter implements EgressEndpoint {
     this.opts.extPort = this.opts.extPort || this.opts.port;
     this.opts.interfaceIp = this.opts.interfaceIp || "0.0.0.0";
     this.opts.useHttps = !!(this.opts.useHttps);
-    this.opts.hostname = this.opts.hostname || "localhost";
+    this.opts.hostname = this.opts.hostname;
     this.opts.iceServers = this.opts.iceServers || [];
 
     this.channelManager = new ChannelManager();
@@ -58,7 +58,10 @@ export class BaseAdapter implements EgressEndpoint {
   }
 
   getBaseUrl(): string {
-    return (this.opts.useHttps ? "https" : "http") + "://" + this.opts.hostname + ":" + this.opts.extPort + this.opts.prefix;
+    if (this.opts.hostname) {
+      return (this.opts.useHttps ? "https" : "http") + "://" + this.opts.hostname + ":" + this.opts.extPort + this.opts.prefix;
+    }
+    return this.opts.prefix;
   }
 
   getIceServers(): ICEServer[] {

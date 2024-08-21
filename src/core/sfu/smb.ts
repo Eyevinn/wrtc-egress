@@ -17,7 +17,7 @@ export class SmbProtocol implements SfuProtocol {
   private smbApiKey?: string;
 
   constructor(opts?: SmbProtocolOptions) {
-    this.smbUrl = opts.smbUrl;
+    this.smbUrl = new URL("/conferences/", opts.smbUrl).toString();
     this.smbApiKey = opts.smbApiKey;
     this.log("URL=" + this.smbUrl);
   }
@@ -32,6 +32,7 @@ export class SmbProtocol implements SfuProtocol {
       headers: {
         "Content-Type": "application/json",
         "X-APIkey": this.smbApiKey,
+        "Authorization": `Bearer ${this.smbApiKey}`
       },
       body: '{}'
     });
@@ -76,6 +77,7 @@ export class SmbProtocol implements SfuProtocol {
       headers: {
         "Content-Type": "application/json",
         "X-APIkey": this.smbApiKey,
+        "Authorization": `Bearer ${this.smbApiKey}`
       },
       body: JSON.stringify(request)
     });
@@ -99,6 +101,7 @@ export class SmbProtocol implements SfuProtocol {
       headers: {
         "Content-Type": "application/json",
         "X-APIkey": this.smbApiKey,
+        "Authorization": `Bearer ${this.smbApiKey}`
       },
       body: JSON.stringify(request)
     });
@@ -115,6 +118,7 @@ export class SmbProtocol implements SfuProtocol {
       method: "GET",
       headers: {
         "X-APIkey": this.smbApiKey,
+        "Authorization": `Bearer ${this.smbApiKey}`
       }
     });
 
