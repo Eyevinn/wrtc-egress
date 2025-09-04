@@ -17,6 +17,7 @@ export interface MediaStreamsInfo {
   video: {
     ssrcs: MediaStreamsInfoSsrc[];
     ssrcGroups: MediaStreamsInfoSsrcGroup[];
+    codec?: string;
   }
 }
 
@@ -46,7 +47,8 @@ export const MediaStreamsSchema = {
       type: "object",
       properties: {
         ssrcs: { type: "array", items: { type: "object", properties: MediaStreamsInfoSsrcSchema } },
-        ssrcsGroups: { type: "array", items: { type: "object", properties: MediaStreamsInfoSsrcGroupSchema } }
+        ssrcsGroups: { type: "array", items: { type: "object", properties: MediaStreamsInfoSsrcGroupSchema } },
+        codec: { type: "string" }
       }
     }
   }

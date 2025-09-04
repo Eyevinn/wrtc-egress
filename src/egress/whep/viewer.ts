@@ -15,7 +15,6 @@ export class WhepViewer extends BaseViewer implements Viewer {
       this.endpointDescription = 
         await this.getSfuProtocol().allocateEndpoint(this.getResourceId(), this.getId(), true, true, true);
       let offer = this.createOffer();
-
       this.emit("connect");
       return write(offer);
     } catch (exc) {

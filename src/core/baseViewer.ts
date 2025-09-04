@@ -63,6 +63,19 @@ export class BaseViewer extends EventEmitter {
       media: []
     };
 
+    if (this.mediaStreams.video.codec === 'H264') {
+      this.endpointDescription.video["payload-types"] = [{
+        id: 96,
+        clockrate: 90000,
+        name: "H264",
+        parameters: {},
+        'rtcp-fbs': [
+          { type: 'goog-remb', subtype: undefined },
+          { type: 'nack', subtype: undefined },
+          { subtype: 'pli', type: 'nack' }
+        ]
+      }];
+    }
     this.addSFUMids(offer);
     this.addIngestMids(offer);
 
@@ -224,7 +237,7 @@ export class BaseViewer extends EventEmitter {
         videoDescription.ssrcs.push({ id: ssrc.ssrc, attribute: 'msid', value: `${ssrc.mslabel} ${ssrc.label}` });
       }
 
-      videoDescription.ssrcGroups = this.mediaStreams.video.ssrcGroups.flatMap(element => {
+      videoDescription.ssrcGroups = this.mediaStreams.video.ssrcGroups && this.mediaStreams.video.ssrcGroups.flatMap(element => {
         return {
           semantics: element.semantics,
           ssrcs: element.ssrcs.join(' ')
