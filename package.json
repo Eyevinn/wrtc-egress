@@ -1,6 +1,6 @@
 {
   "name": "@eyevinn/wrtc-egress",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Server endpoint NPM library for standardized WebRTC based streaming",
   "main": "dist/index.js",
   "files": [
