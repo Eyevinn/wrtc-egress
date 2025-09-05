@@ -178,9 +178,9 @@ export class BaseViewer extends EventEmitter {
         }];
       }
 
-      audioDescription.ext = audio["rtp-hdrexts"].flatMap(element => {
+      audioDescription.ext = audio["rtp-hdrexts"] ? audio["rtp-hdrexts"].flatMap(element => {
         return { value: element.id, uri: element.uri }
-      });
+      }) : undefined;
 
       audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'cname', value: element.cname });
       audioDescription.ssrcs.push({ id: element.ssrc, attribute: 'label', value: element.label });
