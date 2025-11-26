@@ -32,7 +32,7 @@
   ],
   "homepage": "https://github.com/Eyevinn/wrtc-egress#readme",
   "dependencies": {
-    "fastify": "^3.27.4",
+    "fastify": "^5.6.2",
     "fastify-cors": "^6.0.3",
     "fastify-swagger": "^5.2.0",
     "node-fetch": "^2.6.5",
