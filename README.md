@@ -1,7 +1,5 @@
 # Standardized WebRTC Egress Endpoint Library
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Slack](http://slack.streamingtech.se/badge.svg)](http://slack.streamingtech.se)
-
 ---
 <div align="center">
 
@@ -14,6 +12,8 @@ Run this service in the cloud with a single click.
 </div>
 
 ---
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Slack](http://slack.streamingtech.se/badge.svg)](http://slack.streamingtech.se)
 
 Server endpoint for standardized WebRTC based streaming. Currently supports the following egress / playback protocol:
 - WHPP: [WebRTC HTTP Playback Protocol](https://github.com/Eyevinn/webrtc-http-playback-protocol/blob/master/webrtc-http-playback-protocol.md)
