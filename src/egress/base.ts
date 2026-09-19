@@ -15,17 +15,19 @@ export class BaseAdapter implements EgressEndpoint {
     this.opts = opts;
     this.opts.port = this.opts.port || 8001;
     this.opts.extPort = this.opts.extPort || this.opts.port;
-    this.opts.interfaceIp = this.opts.interfaceIp || "0.0.0.0";
-    this.opts.useHttps = !!(this.opts.useHttps);
+    this.opts.interfaceIp = this.opts.interfaceIp || "0.0.0.0";
+    this.opts.useHttps = !!this.opts.useHttps;
     this.opts.hostname = this.opts.hostname;
     this.opts.iceServers = this.opts.iceServers || [];
 
     this.channelManager = new ChannelManager();
+    this.channelManager.startReaper(
+      parseInt(process.env.CHANNEL_IDLE_TTL_MS || "900000"),
+    );
 
     this.server = fastify({
       ignoreTrailingSlash: true,
-      logger:
-      { level: "warn" },
+      logger: { level: "warn" },
     });
     this.server.register(require("fastify-cors"), {
       exposedHeaders: ["Location", "Accept", "Allow", "Accept-POST"],
@@ -33,7 +35,10 @@ export class BaseAdapter implements EgressEndpoint {
       preflightContinue: true,
       strictPreflight: false,
     });
-    this.server.register(api, { prefix: "/api", channelManager: this.channelManager });
+    this.server.register(api, {
+      prefix: "/api",
+      channelManager: this.channelManager,
+    });
     this.server.register(healthcheck);
   }
 
@@ -47,19 +52,29 @@ export class BaseAdapter implements EgressEndpoint {
 
   async listen(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.server.listen({ port: this.opts.port, host: this.opts.interfaceIp }, (err, address) => {
-        if (err) reject(err);
-        this.log(`Playback endpoint at ${address + this.opts.prefix}`);
-        this.log(`Channel management endpoint at ${address + "/api/docs" }`);
-        this.log(`Base URL: ${this.getBaseUrl()}`);
-        resolve();
-      });  
+      this.server.listen(
+        { port: this.opts.port, host: this.opts.interfaceIp },
+        (err, address) => {
+          if (err) reject(err);
+          this.log(`Playback endpoint at ${address + this.opts.prefix}`);
+          this.log(`Channel management endpoint at ${address + "/api/docs"}`);
+          this.log(`Base URL: ${this.getBaseUrl()}`);
+          resolve();
+        },
+      );
     });
   }
 
   getBaseUrl(): string {
     if (this.opts.hostname) {
-      return (this.opts.useHttps ? "https" : "http") + "://" + this.opts.hostname + ":" + this.opts.extPort + this.opts.prefix;
+      return (
+        (this.opts.useHttps ? "https" : "http") +
+        "://" +
+        this.opts.hostname +
+        ":" +
+        this.opts.extPort +
+        this.opts.prefix
+      );
     }
     return this.opts.prefix;
   }
@@ -95,5 +110,9 @@ export class BaseAdapter implements EgressEndpoint {
 
   getChannelList(): string[] {
     return this.channelManager.getChannelIds();
+  }
+
+  touchChannel(channelId: string): void {
+    this.channelManager.getChannel(channelId)?.touch();
   }
 }
