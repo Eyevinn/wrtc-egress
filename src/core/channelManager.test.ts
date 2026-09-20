@@ -30,6 +30,10 @@ describe("ChannelManager", () => {
   describe("startReaper()", () => {
     beforeEach(() => {
       jest.useFakeTimers();
+      // Anchor the fake clock so Date.now() / new Date() both return fake time.
+      // Without this, new Date() inside Channel's constructor still uses the real
+      // wall-clock, so the reaper sees ~0ms elapsed even after advanceTimersByTime.
+      jest.setSystemTime(new Date());
     });
 
     afterEach(() => {
@@ -41,8 +45,11 @@ describe("ChannelManager", () => {
       manager.createChannel("stale", "res1", mockMediaStreams);
       manager.startReaper(ttlMs);
 
-      // Advance time so the channel is older than the TTL
-      jest.advanceTimersByTime(ttlMs + 1000);
+      // Advance time past two interval ticks so the reaper fires when age > ttlMs.
+      // The interval period equals ttlMs, so the first tick fires at exactly ttlMs
+      // (age === ttlMs, not strictly greater), and the second tick fires at 2*ttlMs
+      // (age > ttlMs). We advance by 2*ttlMs + 1 to ensure the second tick fires.
+      jest.advanceTimersByTime(ttlMs * 2 + 1);
 
       expect(manager.getChannel("stale")).toBeUndefined();
       expect(manager.getAllChannels()).toHaveLength(0);
