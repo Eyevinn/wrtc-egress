@@ -8,12 +8,16 @@ export class ChannelManager {
     this.channels = new Map();
   }
 
-  createChannel(channelId: string, resourceId: string, mediaStreams: MediaStreamsInfo): Channel {
+  createChannel(
+    channelId: string,
+    resourceId: string,
+    mediaStreams: MediaStreamsInfo,
+  ): Channel {
     // Check if channel with channelId already exists
     if (this.channels.get(channelId)) {
       throw new Error(`Channel with Id ${channelId} already exists`);
     }
-    
+
     const channel = new Channel(channelId, resourceId, mediaStreams);
     this.channels.set(channelId, channel);
     return channel;
@@ -23,7 +27,7 @@ export class ChannelManager {
     const channel = this.channels.get(channelId);
     return channel;
   }
-  
+
   getChannelIds(): string[] {
     const channelIds = [];
     for (const k of this.channels.keys()) {
@@ -31,7 +35,33 @@ export class ChannelManager {
     }
     return channelIds;
   }
-  
+
+  getAllChannels(): Channel[] {
+    return Array.from(this.channels.values());
+  }
+
+  startReaper(ttlMs: number): void {
+    setInterval(
+      () => {
+        const now = Date.now();
+        for (const [id, ch] of this.channels.entries()) {
+          const age = now - ch.getLastActivityAt().getTime();
+          if (age > ttlMs) {
+            console.log(
+              JSON.stringify({
+                event: "channel_reaped",
+                channelId: id,
+                ageMs: age,
+              }),
+            );
+            this.removeChannel(id);
+          }
+        }
+      },
+      Math.min(ttlMs, 60_000),
+    );
+  }
+
   removeChannel(channelId: string) {
     const channel = this.channels.get(channelId);
     if (channel) {

@@ -5,11 +5,11 @@ import { MediaStreamsInfo, MediaStreamsSchema } from "./mediaStreamsInfo";
 interface ChannelRequest {
   Params: {
     channelId: string;
-  },
+  };
   Body: {
     resourceId: string;
     mediaStreams: MediaStreamsInfo;
-  }
+  };
 }
 type PostRequest = FastifyRequest<ChannelRequest>;
 
@@ -22,8 +22,8 @@ interface ChannelResponseBody {
 type DeleteRequest = FastifyRequest<{
   Params: {
     channelId: string;
-  }
-}>
+  };
+}>;
 
 const PostRequestSchema = {
   description: "Create a channel",
@@ -31,9 +31,9 @@ const PostRequestSchema = {
     type: "object",
     properties: {
       resourceId: { type: "string" },
-      mediaStreams: { $ref: "mediastream#" }
-    }
-  }
+      mediaStreams: { $ref: "mediastream#" },
+    },
+  },
 };
 
 export default function (fastify: FastifyInstance, opts: any, done) {
@@ -43,48 +43,88 @@ export default function (fastify: FastifyInstance, opts: any, done) {
     routePrefix: "/docs",
     swagger: {
       consumes: ["application/json"],
-      produces: ["application/json"]
+      produces: ["application/json"],
     },
     exposeRoute: true,
   });
   fastify.addSchema(MediaStreamsSchema);
 
   // create channel
-  fastify.post("/channel/:channelId", { schema: PostRequestSchema }, async (request: PostRequest, reply: FastifyReply) => {
-    try {
-      const channelId = request.params.channelId;
-      console.log(`Creating channel ${channelId}`);
-      console.dir(request.body, { depth: null });
+  fastify.post(
+    "/channel/:channelId",
+    { schema: PostRequestSchema },
+    async (request: PostRequest, reply: FastifyReply) => {
+      try {
+        const channelId = request.params.channelId;
+        console.log(`Creating channel ${channelId}`);
+        console.dir(request.body, { depth: null });
 
-      const channel = 
-        channelManager.createChannel(channelId, request.body.resourceId, request.body.mediaStreams);
-      const responseBody: ChannelResponseBody = {
-        channelId: channel.getId(),
-        resourceId: channel.getResourceId(),
-        mediaStreams: channel.getMediaStreams(),
-      };
-      reply.code(200).send(responseBody);
-    } catch (e) {
-      console.error(e);
-      const err = new Error("Exception thrown when creating a channel, see server logs for more details");
-      reply.code(500).send(err.message);
-    }
-  });
+        const channel = channelManager.createChannel(
+          channelId,
+          request.body.resourceId,
+          request.body.mediaStreams,
+        );
+        const responseBody: ChannelResponseBody = {
+          channelId: channel.getId(),
+          resourceId: channel.getResourceId(),
+          mediaStreams: channel.getMediaStreams(),
+        };
+        reply.code(200).send(responseBody);
+      } catch (e) {
+        console.error(e);
+        const err = new Error(
+          "Exception thrown when creating a channel, see server logs for more details",
+        );
+        reply.code(500).send(err.message);
+      }
+    },
+  );
 
   // remove channel
-  fastify.delete("/channel/:channelId", {}, async (request: DeleteRequest, reply: FastifyReply) => {
-    try {
-      const channelId = request.params.channelId;
-      console.log(`Removing channel ${channelId}`);
+  fastify.delete(
+    "/channel/:channelId",
+    {},
+    async (request: DeleteRequest, reply: FastifyReply) => {
+      try {
+        const channelId = request.params.channelId;
+        console.log(`Removing channel ${channelId}`);
 
-      channelManager.removeChannel(channelId);
-      reply.code(204).send();
-    } catch (e) {
-      console.error(e);
-      const err = new Error("Exception thrown when deleting a channel, see server logs for more details");
-      reply.code(500).send(err.message);
-    }
-  });
+        channelManager.removeChannel(channelId);
+        reply.code(204).send();
+      } catch (e) {
+        console.error(e);
+        const err = new Error(
+          "Exception thrown when deleting a channel, see server logs for more details",
+        );
+        reply.code(500).send(err.message);
+      }
+    },
+  );
+
+  // list channels with metadata
+  fastify.get(
+    "/channels",
+    {},
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        const channels = channelManager.getAllChannels();
+        reply.code(200).send(
+          channels.map((ch) => ({
+            channelId: ch.getId(),
+            createdAt: ch.getCreatedAt().toISOString(),
+            lastActivityAt: ch.getLastActivityAt().toISOString(),
+            status: ch.getStatus(),
+          })),
+        );
+      } catch (e) {
+        console.error(e);
+        const err = new Error(
+          "Exception thrown when listing channels, see server logs for more details",
+        );
+        reply.code(500).send(err.message);
+      }
+    },
+  );
 
   done();
 }
